@@ -26,11 +26,19 @@ export default function RestaurantsScreen ({ navigation, route }) {
     }
   }, [loggedInUser, route])
 
+  const renderCardTitle = (item) => {
+    return (<>
+    <TextSemiBold>{item.name}</TextSemiBold>
+    {item.discount !== null && item.discountCode !== null &&
+      <TextSemiBold style={{ marginLeft: 5, fontSize: 15, color: GlobalStyles.brandPrimary }}>({item.discount}% of discount using the code {item.discountCode})</TextSemiBold>}
+      </>)
+  }
+
   const renderRestaurant = ({ item }) => {
     return (
       <ImageCard
         imageUri={item.logo ? { uri: process.env.API_BASE_URL + '/' + item.logo } : restaurantLogo}
-        title={item.name}
+        title={renderCardTitle(item)}
         onPress={() => {
           navigation.navigate('RestaurantDetailScreen', { id: item.id })
         }}

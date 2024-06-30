@@ -19,7 +19,7 @@ export default function CreateRestaurantScreen ({ navigation }) {
   const [restaurantCategories, setRestaurantCategories] = useState([])
   const [backendErrors, setBackendErrors] = useState()
 
-  const initialRestaurantValues = { name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, restaurantCategoryId: null }
+  const initialRestaurantValues = { name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, restaurantCategoryId: null, discount: null, discountCode: null }
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -53,7 +53,17 @@ export default function CreateRestaurantScreen ({ navigation }) {
       .number()
       .positive()
       .integer()
-      .required('Restaurant category is required')
+      .required('Restaurant category is required'),
+    discountCode: yup
+      .string()
+      .nullable()
+      .min(1)
+      .max(10),
+    discount: yup
+      . number()
+      .nullable()
+      .min(1)
+      .max(99)
   })
 
   useEffect(() => {
@@ -178,6 +188,14 @@ export default function CreateRestaurantScreen ({ navigation }) {
               />
               <ErrorMessage name={'restaurantCategoryId'} render={msg => <TextError>{msg}</TextError> }/>
 
+              <InputItem
+                name='discount'
+                label='Discount:'
+              />
+              <InputItem
+                name='discountCode'
+                label='Discount Code:'
+              />
               <Pressable onPress={() =>
                 pickImage(
                   async result => {
